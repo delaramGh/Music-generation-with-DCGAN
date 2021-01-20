@@ -1,5 +1,6 @@
 import scipy.io.wavfile as wav
 import os
+import preprocess as stft
 
 '''
 -----------
@@ -46,6 +47,26 @@ def allTracks(h=5, t=10):
         oneTrack(name, i, h, t)
         i += 1
 
+def stftSamples():
+    os.chdir("samples")
+    loc = os.getcwd()
+    names = os.listdir()
+    samples = []
+    i = 1
+    os.mkdir("stftSamples")
+    for name in names:
+        fs, x = stft.loadAudio(name)
+        samples.append(x)
+        os.chdir("stftSamples")
+        print(f'generating  {i}th sample')
+        stft.transform(x, fs, name=name, show=False)
+        os.chdir(loc)
+        i += 1
+    return samples
+
 
 if __name__ == "__main__":
-    allTracks(3, 8)
+    allTracks(15, 30)
+    samples = stftSamples()
+    print(len(samples), samples[0].shape, type(samples[0]))
+
