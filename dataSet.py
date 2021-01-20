@@ -1,6 +1,7 @@
 import scipy.io.wavfile as wav
 import os
 import preprocess as stft
+import numpy as np 
 
 '''
 -----------
@@ -52,21 +53,36 @@ def stftSamples():
     loc = os.getcwd()
     names = os.listdir()
     samples = []
+    stfts = []
     i = 1
-    os.mkdir("stftSamples")
+    if not os.path.exists('stftSamples'):
+        os.mkdir("stftSamples")
     for name in names:
         fs, x = stft.loadAudio(name)
         samples.append(x)
         os.chdir("stftSamples")
         print(f'generating  {i}th sample')
-        stft.transform(x, fs, name=name, show=False)
+        stfts.append(stft.transform(x, fs, name=name, show=False))
         os.chdir(loc)
         i += 1
-    return samples
+    return samples, stfts
+
+def loadNPYs(folder):
+    '''
+        Loads previously generated stft files which were
+        saved as npy files.
+    '''
+    files = [file for file in os.listdir(folder) if file.endswith('.npy')]
+    stfts = [np.load(os.path.join(folder, file)) for file in files]
+    return stfts
 
 
 if __name__ == "__main__":
-    allTracks(15, 30)
-    samples = stftSamples()
+    allTracks(3, 10)
+    samples, stfts = stftSamples()
     print(len(samples), samples[0].shape, type(samples[0]))
+    
+    # stfts = loadNPYs(os.path.join(os.getcwd(), 'data', 'samples', 'stftSamples'))
+    # print(len(stfts), stfts[0].shape)
+    
 
