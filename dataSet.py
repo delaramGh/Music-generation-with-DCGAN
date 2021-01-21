@@ -42,7 +42,8 @@ def oneTrack(filename, track, h=5, t=10): #h: hampushani, t: samples duration
 def allTracks(h=5, t=10):
     os.chdir("data")
     tracks = os.listdir()
-    tracks.pop()
+    # tracks.pop()
+    tracks.remove('samples')
     i = 1
     for name in tracks:
         oneTrack(name, i, h, t)
