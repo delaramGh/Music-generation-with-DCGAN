@@ -37,7 +37,7 @@ def oneTrack(filename, track, h=5, t=10): #h: hampushani, t: samples duration
     for i in l:
         samples.append(data[i:i+(t*sample_rate)])
     for i in range(len(l)-5):
-        wav.write(f'samples\\sample_{track}_{i}.wav', sample_rate, samples[i])
+        wav.write(os.path.join('samples', 'sample_{track}_{i}.wav'), sample_rate, samples[i])
 
 def allTracks(h=5, t=10):
     os.chdir("data")
